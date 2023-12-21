@@ -57,7 +57,7 @@ app.get("/exercises/:title", (req, res) => {
   res.json({});
 });
 
-app.post("/nutritions/record", (req, res) => {
+app.post("/nutritions/:userId/record", (req, res) => {
   res.status(201).json({ message: "Zabilježeni podaci o prehrani" });
 });
 
@@ -85,11 +85,11 @@ app.get("/progress/:userId", (req, res) => {
   res.status(200).send();
 });
 
-app.post("/bmi/record", (req, res) => {
+app.post("/bmi/:userId/record", (req, res) => {
   res.status(200).json({ message: "Zabilježeni podaci o BMI" });
 });
 
-app.post("/diary/record", (req, res) => {
+app.post("/diary/:userId/record", (req, res) => {
   res.status(200).json({ message: "Uneseni podaci u dnevniku." });
 });
 
