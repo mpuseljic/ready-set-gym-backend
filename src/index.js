@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import cors from "cors";
 import auth from "./auth.js";
@@ -8,13 +10,8 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
-app.get("/tajna", (req, res) => {
-  let verify = auth.verify(req, res);
-  if (!verify) {
-    return;
-  }
-
-  res.json({ message: "Ovo je tajna" + req.jwt.email });
+app.get("/tajna", [auth.verify], (req, res) => {
+  res.json({ message: "Ovo je tajna " + req.jwt.email });
 });
 
 app.post("/auth", async (req, res) => {

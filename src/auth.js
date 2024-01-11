@@ -37,7 +37,7 @@ export default {
       (await bcrypt.compare(password, userData.password))
     ) {
       delete userData.password;
-      let token = jwt.sign(userData, "tajna", {
+      let token = jwt.sign(userData, process.env.JWT_SECRET, {
         algorithm: "HS512",
         expiresIn: "1 week",
       });
@@ -50,17 +50,20 @@ export default {
     }
   },
 
-  verify(req, res) {
-    let authorization = req.headers.authorization.split(" ");
-    let type = authorization[0];
-    let token = authorization[1];
+  verify(req, res, next) {
+    try {
+      let authorization = req.headers.authorization.split(" ");
+      let type = authorization[0];
+      let token = authorization[1];
 
-    if (type !== "Bearer") {
-      res.status(401).send();
-      return false;
-    } else {
-      req.jwt = jwt.verify(token, "tajna");
-      return true;
+      if (type !== "Bearer") {
+        return res.status(401).send();
+      } else {
+        req.jwt = jwt.verify(token, process.env.JWT_SECRET);
+        return next();
+      }
+    } catch (error) {
+      return res.status(401).send();
     }
   },
 };
