@@ -1,21 +1,17 @@
-const express = require("express");
+import express from "express";
+import cors from "cors";
+
 const app = express();
-const router = express.Router();
+const port = 3000;
 
+app.use(cors());
 app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
 
-const homeRoute = require("./routes/home.route");
-// const loginRoute = require("./routes/login.route");
-// const userRoute = require("./routes/user.route");
-// const dbRoute = require("./routes/progLang.route");
-// const signupRoute = require("./routes/signup.route");
-// app.use("/");
-app.use("/", router); // home
-// app.use("/", loginRoute); // login
-// app.use("/", userRoute); // "profil"
-// app.use("/", dbRoute); // db
-// app.use("/", signupRoute);
+app.get("/", (req, res) => {
+  console.log(req.query);
+  res.send("Hello Wolrd u browser");
+  console.log("Hello world u konzolu");
+});
 
 app.get("/auth", (req, res) => {
   res.json({ token: "adf" });
@@ -71,12 +67,12 @@ app.patch("/user/:userId", (req, res) => {
   res.status(200).json(updatedUser);
 });
 
-// ruta za priduživanje zajdnici
+//ruta za priduživanje zajdnici
 app.post("/community/join", (req, res) => {
   res.status(201).send();
 });
 
-// dohvat informacija o zajedinici
+//dohvat informacija o zajedinici
 app.get("/community/:communityId", (req, res) => {
   res.status(200).send();
 });
@@ -97,6 +93,4 @@ app.get("/diary/:userId", (req, res) => {
   res.status(200).json({});
 });
 
-app.listen(8081, function () {
-  console.log("Server is running on port 8081 ");
-});
+app.listen(port, () => console.log(`Slušam na portu ${port}!`));

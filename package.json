@@ -1,14 +1,24 @@
 {
+  "type": "module",
   "name": "ready-set-gym-backend",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
+    "serve": "nodemon --exec babel-node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mongo": "^0.1.0"
+  },
+  "description": "",
+  "devDependencies": {
+    "@babel/core": "^7.23.7",
+    "@babel/node": "^7.22.19",
+    "@babel/preset-env": "^7.23.8",
+    "nodemon": "^3.0.2"
   }
 }
