@@ -5,6 +5,8 @@ import bcrypt from "bcrypt";
 
 const usersCollection = db.collection("Users");
 
+usersCollection.createIndex({ email: 1 }, { unique: true });
+
 export default {
   async registerUser(userData) {
     const hashedPassword = await bcrypt.hash(userData.password, 10);
