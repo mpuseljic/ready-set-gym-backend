@@ -2,6 +2,7 @@ import mongo from "mongodb";
 import { ObjectId } from "mongodb";
 import db from "./db.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const usersCollection = db.collection("Users");
 
@@ -24,6 +25,28 @@ export default {
       } else {
         throw error;
       }
+    }
+  },
+
+  async authenticateUser(email, password) {
+    let userData = await usersCollection.findOne({ email: email });
+
+    if (
+      userData &&
+      userData.password &&
+      (await bcrypt.compare(password, userData.password))
+    ) {
+      delete userData.password;
+      let token = jwt.sign(userData, "tajna", {
+        algorithm: "HS512",
+        expiresIn: "1 week",
+      });
+      return {
+        token,
+        email: userData.email,
+      };
+    } else {
+      throw new Error("Cannot authenticate");
     }
   },
 };

@@ -8,18 +8,42 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
+app.get("/tajna", (req, res) => {
+  let authorization = req.headers.authorization.split(" ");
+  let type = authorization[0];
+  let token = authorization[1];
+
+  if (type !== "Bearer") {
+    return res.status(401).send();
+  } else {
+  }
+
+  res.json({ message: "Ovo je tajna" });
+});
+
+app.post("/auth", async (req, res) => {
+  let userData = req.body;
+  try {
+    const respData = await auth.authenticateUser(
+      userData.email,
+      userData.password
+    );
+    res.json(respData);
+  } catch (error) {
+    res.status(403).json({ error: error.message });
+  }
+});
+
 app.post("/users", async (req, res) => {
   const userData = req.body;
   try {
     const respData = await auth.registerUser(userData);
     res.json(respData);
   } catch (error) {
-    res.status(500).json({ error: "Registration failed" });
+    res
+      .status(500)
+      .json({ error: "Email already exists. Please choose a different one." });
   }
-});
-
-app.get("/auth", (req, res) => {
-  res.json({ token: "adf" });
 });
 
 app.post("/register", (req, res) => {
