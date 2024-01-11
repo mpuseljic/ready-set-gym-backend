@@ -9,16 +9,12 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/tajna", (req, res) => {
-  let authorization = req.headers.authorization.split(" ");
-  let type = authorization[0];
-  let token = authorization[1];
-
-  if (type !== "Bearer") {
-    return res.status(401).send();
-  } else {
+  let verify = auth.verify(req, res);
+  if (!verify) {
+    return;
   }
 
-  res.json({ message: "Ovo je tajna" });
+  res.json({ message: "Ovo je tajna" + req.jwt.email });
 });
 
 app.post("/auth", async (req, res) => {

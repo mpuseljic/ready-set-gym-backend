@@ -49,4 +49,18 @@ export default {
       throw new Error("Cannot authenticate");
     }
   },
+
+  verify(req, res) {
+    let authorization = req.headers.authorization.split(" ");
+    let type = authorization[0];
+    let token = authorization[1];
+
+    if (type !== "Bearer") {
+      res.status(401).send();
+      return false;
+    } else {
+      req.jwt = jwt.verify(token, "tajna");
+      return true;
+    }
+  },
 };
