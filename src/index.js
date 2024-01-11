@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import connect from "./db.js";
+import auth from "./auth.js";
 
 const app = express();
 const port = 3000;
@@ -14,16 +14,22 @@ app.get("/", (req, res) => {
   console.log("Hello world u konzolu");
 });
 
+app.post("/users", async (req, res) => {
+  const userData = req.body;
+  try {
+    const respData = await auth.registerUser(userData);
+    res.json(respData);
+  } catch (error) {
+    res.status(500).json({ error: "Registration failed" });
+  }
+});
+
 app.get("/auth", (req, res) => {
   res.json({ token: "adf" });
 });
 
 app.post("/register", (req, res) => {
   res.status(201).send();
-});
-
-app.get("/user", (req, res) => {
-  res.json([{}]);
 });
 
 app.get("/user/:userId", (req, res) => {
