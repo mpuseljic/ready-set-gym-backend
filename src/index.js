@@ -8,12 +8,6 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  console.log(req.query);
-  res.send("Hello Wolrd u browser");
-  console.log("Hello world u konzolu");
-});
-
 app.post("/users", async (req, res) => {
   const userData = req.body;
   try {
