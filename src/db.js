@@ -3,10 +3,7 @@ import mongo from "mongodb";
 let connection_string =
   "mongodb+srv://mpuseljic:mirna123@cluster0.tjbw8it.mongodb.net/?retryWrites=true&w=majority";
 
-let client = new mongo.MongoClient(connection_string, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+let client = new mongo.MongoClient(connection_string);
 
 let db = null;
 
