@@ -10,8 +10,8 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
-app.get("/tajna", [auth.verify], (req, res) => {
-  res.json({ message: "Ovo je tajna " + req.jwt.email });
+app.get("/secure-route", [auth.verify], (req, res) => {
+  res.json({ message: "This is a secure route" });
 });
 
 app.post("/auth", async (req, res) => {
@@ -21,7 +21,7 @@ app.post("/auth", async (req, res) => {
       userData.email,
       userData.password
     );
-    res.json(respData);
+    res.json({ token: respData.token });
   } catch (error) {
     res.status(403).json({ error: error.message });
   }

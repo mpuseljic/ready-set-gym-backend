@@ -31,6 +31,9 @@ export default {
   async authenticateUser(email, password) {
     let userData = await usersCollection.findOne({ email: email });
 
+    console.log("Received data: ", email, password);
+    console.log("User data from the database: ", userData);
+
     if (
       userData &&
       userData.password &&
