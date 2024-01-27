@@ -3,6 +3,10 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import auth from "./auth.js";
+import db from "./db.js";
+import mongo from "mongodb";
+
+const usersCollection = db.collection("Users");
 
 const app = express();
 const port = 3000;
@@ -36,6 +40,16 @@ app.post("/users", async (req, res) => {
     res
       .status(500)
       .json({ error: "Email already exists. Please choose a different one." });
+  }
+});
+
+app.get("/users/profile", [auth.verify], async (req, res) => {
+  try {
+    const user = await usersCollection.findOne({ email: req.jwt.email });
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
