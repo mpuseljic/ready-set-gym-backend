@@ -69,4 +69,49 @@ export default {
       return res.status(401).send();
     }
   },
+
+  async changeUserProfile(
+    email,
+    firstName,
+    lastName,
+    old_password,
+    new_password
+  ) {
+    try {
+      console.log("Updating profile for email:", email);
+      console.log("New profile data:", { firstName, lastName });
+      const user = await usersCollection.findOne({ email: email });
+
+      if (
+        user &&
+        user.password &&
+        (await bcrypt.compare(old_password, user.password))
+      ) {
+        console.log("Old password matches. Updating profile...");
+        const delta = {};
+        if (firstName) {
+          delta.firstName = firstName;
+        }
+        if (lastName) {
+          delta.lastName = lastName;
+        }
+        if (new_password) {
+          const new_password_hashed = await bcrypt.hash(new_password, 8);
+          delta.password = new_password_hashed;
+        }
+
+        const result = await usersCollection.updateOne(
+          { _id: user._id },
+          { $set: delta }
+        );
+
+        return result.modifiedCount === 1;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.error(error);
+      throw new Error("Failed to change password!");
+    }
+  },
 };

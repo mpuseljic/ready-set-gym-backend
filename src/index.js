@@ -53,6 +53,30 @@ app.get("/users/profile", [auth.verify], async (req, res) => {
   }
 });
 
+app.patch("/user", [auth.verify], async (req, res) => {
+  try {
+    const userData = req.body;
+    const email = req.jwt.email;
+    const result = await auth.changeUserProfile(
+      email,
+      userData.firstName,
+      userData.lastName,
+      userData.old_password,
+      userData.new_password
+    );
+
+    if (result) {
+      console.log("Profile successfully updated.");
+      res.status(201).json({ message: "Password successfully updated." });
+    } else {
+      console.log("Failed to update profile.");
+      res.status(500).json({ error: "Failed to update password." });
+    }
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).json({ error: "Failed to update password!" });
+  }
+});
 app.post("/register", (req, res) => {
   res.status(201).send();
 });
