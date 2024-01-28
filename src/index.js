@@ -77,6 +77,17 @@ app.patch("/user", [auth.verify], async (req, res) => {
     res.status(500).json({ error: "Failed to update password!" });
   }
 });
+
+app.get("/exercises", async (req, res) => {
+  try {
+    const exerciseList = await db.collection("exerciselist").find({}).toArray();
+    res.json(exerciseList);
+  } catch (error) {
+    console.error("Error fetching exercise list:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 app.post("/register", (req, res) => {
   res.status(201).send();
 });
