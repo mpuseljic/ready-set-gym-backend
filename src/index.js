@@ -88,6 +88,19 @@ app.get("/exercises", async (req, res) => {
   }
 });
 
+app.get("/recommendedworkouts/:workoutType", async (req, res) => {
+  const workoutType = req.params.workoutType;
+  try {
+    const recommendedWorkouts = await db
+      .collection("recommendedWorkouts")
+      .findOne({ type: workoutType });
+    res.json(recommendedWorkouts);
+  } catch (error) {
+    console.error("Error fetching recommended workouts:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 app.post("/register", (req, res) => {
   res.status(201).send();
 });
