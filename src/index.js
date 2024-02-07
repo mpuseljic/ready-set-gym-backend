@@ -101,6 +101,67 @@ app.get("/recommendedworkouts/:workoutType", async (req, res) => {
   }
 });
 
+app.post("/diary/record", [auth.verify], async (req, res) => {
+  try {
+    const { content, date } = req.body;
+    const user = await usersCollection.findOne({ email: req.jwt.email });
+
+    if (user) {
+      await db.collection("UserDiary").insertOne({
+        email: user.email,
+        content,
+        date,
+      });
+      res.status(200).json({ message: "Diary entry saved successfully." });
+    } else {
+      res.status(404).json({ error: "User not found." });
+    }
+  } catch (error) {
+    console.error("Error saving diary entry:", error);
+    res.status(500).json({ error: "Failed to save diary entry." });
+  }
+});
+
+app.get("/users/profile-diary", [auth.verify], async (req, res) => {
+  try {
+    const diaries = await db
+      .collection("UserDiary")
+      .find({ email: req.jwt.email })
+      .toArray();
+    res.json(diaries);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.delete("/diary/record/:diaryId", [auth.verify], async (req, res) => {
+  try {
+    const diaryId = req.params.diaryId;
+
+    const user = await usersCollection.findOne({ email: req.jwt.email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    const diaryEntry = await db.collection("UserDiary").findOne({
+      _id: new mongo.ObjectId(diaryId),
+      email: user.email,
+    });
+    if (!diaryEntry) {
+      return res.status(404).json({ error: "Diary entry not found." });
+    }
+
+    await db.collection("UserDiary").deleteOne({
+      _id: new mongo.ObjectId(diaryId),
+    });
+    res.status(200).json({ message: "Diary entry deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting diary entry:", error);
+    res.status(500).json({ error: "Failed to delete diary entry." });
+  }
+});
+
 app.post("/register", (req, res) => {
   res.status(201).send();
 });
