@@ -162,6 +162,39 @@ app.delete("/diary/record/:diaryId", [auth.verify], async (req, res) => {
   }
 });
 
+app.post("/weight/record", [auth.verify], async (req, res) => {
+  try {
+    const { weight } = req.body;
+    const user = await usersCollection.findOne({ email: req.jwt.email });
+
+    if (user) {
+      await db.collection("Weight").insertOne({
+        email: user.email,
+        weight: parseInt(weight),
+        month: new Date().toLocaleString("en-US", { month: "long" }),
+      });
+      res.status(200).json({ message: "Weight recorded successfully." });
+    } else {
+      res.status(404).json({ error: "User not found." });
+    }
+  } catch (error) {
+    console.error("Error recording weight:", error);
+    res.status(500).json({ error: "Failed to record weight." });
+  }
+});
+
+app.get("/weight", [auth.verify], async (req, res) => {
+  try {
+    const weights = await db
+      .collection("Weight")
+      .find({ email: req.jwt.email })
+      .toArray();
+    res.json({ weights });
+  } catch (error) {
+    console.error("Error fetching weights:", error);
+    res.status(500).json({ error: "Failed to fetch weights." });
+  }
+});
 app.post("/register", (req, res) => {
   res.status(201).send();
 });
