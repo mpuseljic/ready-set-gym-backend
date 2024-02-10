@@ -86,6 +86,44 @@ app.patch("/user", [auth.verify], async (req, res) => {
     }
 });
 
+app.post("/workout-plan", async (req, res) => {
+    try {
+        const workoutPlanData = req.body;
+        const result = await auth.addNewWorkoutPlan(
+            workoutPlanData.email,
+            workoutPlanData.imageUrl,
+            workoutPlanData.exercises,
+            workoutPlanData.name
+        );
+        if (result) {
+            console.log("New plan successfully added.");
+            res.status(201).json({ message: "New plan successfully added." });
+        } else {
+            console.log("Failed to add new plan.");
+            res.status(500).json({ error: "Failed to add new plan." });
+        }
+    } catch (error) {
+        console.error("Error adding a plan:", error);
+        res.status(500).json({ error: "Error adding a plan" });
+    }
+});
+
+app.get("/workout-plan/:userEmail", async (req, res) => {
+    const email = req.params.userEmail;
+    try {
+        const userWorkoutPlans = await db
+            .collection("WorkoutPlans")
+            .find({
+                email: email,
+            })
+            .toArray();
+        res.json(userWorkoutPlans);
+    } catch (error) {
+        console.error("Error fetching exercise list:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
 app.get("/exercises", async (req, res) => {
     try {
         const exerciseList = await db

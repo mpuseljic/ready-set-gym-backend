@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const usersCollection = db.collection("Users");
+const WorkoutPlanCollection = db.collection("WorkoutPlans");
 
 usersCollection.createIndex({ email: 1 }, { unique: true });
 
@@ -137,7 +138,30 @@ export default {
             }
         } catch (error) {
             console.error(error);
-            throw new Error("Failed to change password!");
+            throw new Error("Failed to change profile picture!");
+        }
+    },
+    async addNewWorkoutPlan(email, titleImagePath, exercisesArray, planName) {
+        try {
+            console.log("Creating new workout plan for:", email);
+            const user = await usersCollection.findOne({ email: email });
+
+            if (user && user.password) {
+                const result = await WorkoutPlanCollection.insertOne({
+                    _id: new ObjectId(),
+                    email: email,
+                    titleImagePath: titleImagePath,
+                    exercisesArray: exercisesArray,
+                    planName: planName,
+                });
+
+                return result;
+            } else {
+                return false;
+            }
+        } catch (error) {
+            console.error(error);
+            throw new Error("Failed to add new plan");
         }
     },
 };
