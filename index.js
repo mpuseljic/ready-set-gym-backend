@@ -2,8 +2,8 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import cors from "cors";
-import auth from "./auth.js";
-import db from "./db.js";
+import auth from "./src/auth.js";
+import db from "./src/db.js";
 import mongo from "mongodb";
 
 const usersCollection = db.collection("Users");
@@ -18,6 +18,9 @@ app.get("/secure-route", [auth.verify], (req, res) => {
     res.json({ message: "This is a secure route" });
 });
 
+app.get("/", (req, res) => {
+    res.send("Express on Vercel");
+});
 app.post("/auth", async (req, res) => {
     let userData = req.body;
     try {
