@@ -251,3 +251,5 @@ app.get("/weight", [auth.verify], async (req, res) => {
 });
 
 app.listen(port, () => console.log(`Slušam na portu ${port}!`));
+
+export default app;
