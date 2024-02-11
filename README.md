@@ -19,12 +19,12 @@ Akademska godina: 2023./2024.
 ```
 
 ## Linkovi
-- Link na video: 
+- Link na video: [Predlozak.za.prezentaciju.projekta.pptx](https://github.com/mpuseljic/ready-set-gym-backend/files/14234132/Predlozak.za.prezentaciju.projekta.pptx)
+
 - Link na dokumentaciju:[Dokumentacija ready-set-gym.pdf](https://github.com/mpuseljic/ready-set-gym-frontend/files/14233956/Dokumentacija.ready-set-gym.pdf)
-
-
-
-
+  
+- Link na prezentaciju: [Predlozak.za.prezentaciju.projekta.pptx](https://github.com/mpuseljic/ready-set-gym-backend/files/14234138/Predlozak.za.prezentaciju.projekta.pptx)
+  
 - Javni URL aplikacije: https://ready-set-gym-frontend.vercel.app/
 
 
