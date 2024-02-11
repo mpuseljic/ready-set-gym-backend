@@ -19,7 +19,7 @@ app.get("/secure-route", [auth.verify], (req, res) => {
 });
 
 app.get("/", (req, res) => {
-    res.send("Express on Vercel");
+    res.send("Welcome to Render");
 });
 app.post("/auth", async (req, res) => {
     let userData = req.body;
