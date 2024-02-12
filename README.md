@@ -19,7 +19,7 @@ Akademska godina: 2023./2024.
 ```
 
 ## Linkovi
-- Link na video: 
+- Link na video: https://youtu.be/xiiJWJLLHPM?si=0AWp_rzWcvzf_jbi
 
 - Link na dokumentaciju:[Dokumentacija ready-set-gym.pdf](https://github.com/mpuseljic/ready-set-gym-frontend/files/14233956/Dokumentacija.ready-set-gym.pdf)
   
